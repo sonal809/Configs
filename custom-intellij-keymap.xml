@@ -1,0 +1,11 @@
+<keymap version="1" name="Eclipse (Mac OS X) copy" parent="Eclipse (Mac OS X)">
+  <action id="Find">
+    <keyboard-shortcut first-keystroke="meta f" />
+  </action>
+  <action id="GotoImplementation">
+    <keyboard-shortcut first-keystroke="ctrl meta i" />
+  </action>
+  <action id="Replace">
+    <keyboard-shortcut first-keystroke="meta alt r" />
+  </action>
+</keymap>
