@@ -1,0 +1,41 @@
+#!/bin/bash -e
+# This script runs the checkstyle before you make a commit - Only on the files that have changed.
+# Taken from : https://hdpe.me/post/maven-checkstyle-pre-commit-hook/
+# Save this as `pre-commit` in <pathToGitProject>/.git/hooks/
+# run chmod +x pre-commit 
+# This will run everytime before you make a commit in that project. Note: That project needs to be a maven project.
+
+function get_module() {
+  local path=$1
+  while true; do
+    path=$(dirname $path)
+    if [ -f "$path/pom.xml" ]; then
+      echo "$path"
+      return
+    elif [[ "./" =~ "$path" ]]; then
+      return
+    fi
+  done
+}
+
+modules=()
+
+for file in $(git diff --name-only --cached \*.java); do
+  module=$(get_module "$file")
+  if [ "" != "$module" ] \
+      && [[ ! " ${modules[@]} " =~ " $module " ]]; then
+    modules+=("$module")
+  fi
+done
+
+if [ ${#modules[@]} -eq 0 ]; then
+  exit
+fi
+
+modules_arg=$(printf ",%s" "${modules[@]}")
+modules_arg=${modules_arg:1}
+
+export MAVEN_OPTS="-client
+  -XX:+TieredCompilation
+  -XX:TieredStopAtLevel=1
+  -Xverify:none"
