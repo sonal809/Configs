@@ -39,3 +39,7 @@ export MAVEN_OPTS="-client
   -XX:+TieredCompilation
   -XX:TieredStopAtLevel=1
   -Xverify:none"
+
+ /usr/local/Cellar/maven/3.5.4/libexec/bin/mvn -q -pl "$modules_arg" checkstyle:check
+  
+  
